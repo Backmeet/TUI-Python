@@ -123,4 +123,6 @@ class ListKeyMenu:
             self.hedder_menu_line_char = CharUse
         elif stylelook == 2:
             self.menu_footer_line_char = CharUse
-       
+        if stylelook == 3:
+            self.border_chars = CharUse
+
