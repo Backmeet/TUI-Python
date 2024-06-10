@@ -40,15 +40,14 @@ keyboard.hook(handle_key_event)
 #-----------------------------------------New file as import is dum-------------------------------------------#
 
 # Classes
-class Menu:
+class ListKeyMenu:
     def __init__(self, header, rows_list):
         self.items = rows_list
         self.select_row = 0
         self.header = header
         self.select_row_not_modified = str()
         self.footer = ""
-        self.select() # remove if u want no slection at the start
-      
+
     def select(self):
         # Clear previous selection
         self.clear_selection()
@@ -97,7 +96,73 @@ class Menu:
 
     def CurrentSlectedItem(self):
         return self.select_row_not_modified
-    
+
+
+
+
 def displayflip():
     os.system("cls")
 
+
+class MenuManger:
+    def __init__(self, Menus : list[ListKeyMenu]) -> None:
+        self.Menus = Menus
+        self.Slescted_Meue_Index: int = 0
+        self.Slescted_Meue = None
+    
+    def showmenu(self, Index):
+        self.Slescted_Meue_Index = Index
+        self.Slescted_Meue = self.Menus[self.Slescted_Meue_Index]
+    
+    def tickall(self):
+        self.Slescted_Meue = self.Menus[self.Slescted_Meue_Index]
+        self.Slescted_Meue.show()
+        displayflip()
+    
+    def change_menu_of_index_i_to_new_menu(self, Index: int, NewMenu: ListKeyMenu):
+        self.Menus[Index] = NewMenu
+    
+    def change_menu_list_to_new(self, MenuList: list[ListKeyMenu]):
+        self.Menus = MenuList
+
+    def get_current_menu_go_key_pressed(self):
+        return self.Slescted_Meue.IsGoKeyPressedOnObj
+
+
+# Initialize menu
+my_menu = ListKeyMenu(
+    "Food               : Price",  # Header
+    [
+        "HotDog             :   10$",  # Menu
+        "Burger (ham)       :   20$",
+        "Burger (cheez)     :   20$",
+        "Burger (beef)      :   27$",
+        "Burger (Ham cheez) :   45$"
+    ]
+)
+
+# Initial selection
+my_menu.select()
+
+while True:
+    my_menu.draw_self()
+    print(
+    "is arrow up key is pressed:   " + str(keyboard.is_pressed("up arrow")),
+    "\nis arrow down key is pressed: " + str(keyboard.is_pressed("down arrow")),
+    "\nis key enter is pressed:      " + str(keyboard.is_pressed("enter"))
+    )
+    if key_pulsed("up"):
+        my_menu.event_up_select()
+    elif key_pulsed("down"):
+        my_menu.event_down_select()
+    if my_menu.IsGoKeyPressedOnObj("enter"):
+        my_menu.set_footer(my_menu.CurrentSlectedItem())
+    else:
+        my_menu.set_footer("")
+    time.sleep(0.1)  # Small delay to prevent rapid switching
+    
+    displayflip()
+
+
+
+# this code is under cc-by-ss
