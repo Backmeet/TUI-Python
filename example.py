@@ -96,10 +96,15 @@ class Menu:
 
     def CurrentSlectedItem(self):
         return self.select_row_not_modified
-    
+
+
+
+
 def displayflip():
     os.system("cls")
-    
+
+
+
 
 
 # Initialize menu
